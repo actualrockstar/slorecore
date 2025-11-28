@@ -1,22 +1,22 @@
-import Image from "next/image";
+"use client";
+import Link from "next/link";
 
 export default function Home() {
+
+
   return (
-    <div className="items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 ">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/slorecorecutelogo.png"
-          alt="Slores Logo"
-          width={500}
-          height={38}
-          priority
-        />
+    <div className="items-left justify-items-left min-h-screen p-8 sm:p-20 ">
+      <main className="flex flex-col row-start-2 items-left sm:items-start">
+        <h1 className="text-5xl text-white bg-black w-fit ">The Slores</h1>
+        <Link className='bg-white w-fit text-xl' href='/music'>Music</Link>
+        <Link className='bg-white w-fit text-xl' href='/gallery'>Gallery</Link>
+        <Link className='bg-white w-fit text-xl' href='/shows'>Shows</Link>
+        <Link className='bg-white w-fit text-xl' href='https://mareko-theslores.bandcamp.com/'>Store</Link>
+        <Link className='bg-white w-fit text-xl' href='/socials'>Socials</Link>
+        <Link className='bg-white w-fit text-xl' href='/contact'>Contact</Link>
+        
+        
       </main>
-      <footer className="flex-col gap-6 flex-wrap items-center justify-center text-center">
-        <h1 className="text-xl"> Mareko and the Slores EP drops this spring! </h1>
-        <p><a href="mailto:booking@slorecore.com">Booking: booking@slorecore.com</a></p>
-      </footer>
     </div>
   );
 }

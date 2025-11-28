@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Silkscreen } from "next/font/google";
 import "./globals.css";
+import Image from "next/image";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const silkscreen = Silkscreen({
+  weight: ['400', '700'],  // Silkscreen has regular (400) and bold (700)
+  subsets: ['latin'] 
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "The  Slores",
@@ -25,9 +22,27 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${silkscreen.className} antialiased`}
       >
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="fixed inset-0 w-full h-full object-cover -z-10"
+        >
+          <source src="/web-edit.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
         {children}
+        <Image
+          className="fixed right-5 bottom-5 dark:invert"
+          src="/slorecore logo trans.png"
+          alt="Slores Logo"
+          width={200}
+          height={38}
+          priority
+        />
       </body>
     </html>
   );
