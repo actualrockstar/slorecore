@@ -1,7 +1,10 @@
+"use client";
 import Link from "next/link";
+import { useState } from "react";
+import MailingList from "../components/MailingList";
 
 export default function Contact() {
-
+    const [mailingList, setMailingList] = useState(false);
 
   return (
     <div className="items-left justify-items-left min-h-screen p-8 sm:p-20 ">
@@ -17,6 +20,8 @@ export default function Contact() {
         <br></br>
         <p className="text-black bg-white text-xl w-fit">For General/Media/Press Inquiries</p>
         <a className="text-black bg-white text-xl w-fit" href="mailto:info@slorecore.com">info@slorecore.com</a>
+      <button className='fixed bottom-10 bg-white' onClick={() => {setMailingList(true)}}>become a slore</button> 
+            {mailingList && (<MailingList onClose={() => setMailingList(false)}/>)} 
       </main>
     </div>
   );

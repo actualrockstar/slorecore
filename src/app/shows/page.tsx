@@ -1,8 +1,11 @@
+"use client";
 import Link from "next/link";
 import BandsInTownWidget from "../components/BandsInTownWidget";
+import { useState } from "react"; 
+import MailingList from "../components/MailingList";
 
 export default function Shows() {
-
+  const [mailingList, setMailingList] = useState(false);
 
   return (
     <div className="items-left justify-items-left min-h-screen p-8 sm:p-20 ">
@@ -15,7 +18,8 @@ export default function Shows() {
         <br></br>
         <BandsInTownWidget />
         <br></br>
-
+      <button className='fixed bottom-10 bg-white' onClick={() => {setMailingList(true)}}>become a slore</button> 
+      {mailingList && (<MailingList onClose={() => setMailingList(false)}/>)} 
       </main>
     </div>
   );
