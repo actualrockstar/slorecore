@@ -20,7 +20,7 @@ export default function Contact() {
         <br></br>
         <p className="text-black bg-white text-xl w-fit">For General/Media/Press Inquiries</p>
         <a className="text-black bg-white text-xl w-fit" href="mailto:info@slorecore.com">info@slorecore.com</a>
-      <button className='fixed bottom-10 bg-white' onClick={() => {setMailingList(true)}}>become a slore</button> 
+      <button className='fixed bottom-10 bg-white text-black' onClick={() => {setMailingList(true)}}>become a slore</button> 
             {mailingList && (<MailingList onClose={() => setMailingList(false)}/>)} 
       </main>
     </div>

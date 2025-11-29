@@ -23,7 +23,7 @@ export default function Gallery() {
           </div>
         ) )}
         <br></br>
-        <button className='fixed bottom-10 bg-white' onClick={() => {setMailingList(true)}}>become a slore</button> 
+        <button className='fixed bottom-10 bg-white text-black' onClick={() => {setMailingList(true)}}>become a slore</button> 
             {mailingList && (<MailingList onClose={() => setMailingList(false)}/>)} 
         </main>
     </div>

@@ -24,7 +24,7 @@ export default function Music() {
         <p className="text-black bg-white w-fit text-xl">2025 - Buss - Single: 
           <a href="https://unitedmasters.com/m/buss-4" className="text-red-500"> Listen</a> </p>
       
-      <button className='fixed bottom-10 bg-white' onClick={() => {setMailingList(true)}}>become a slore</button> 
+      <button className='fixed bottom-10 bg-white text-black' onClick={() => {setMailingList(true)}}>become a slore</button> 
       {mailingList && (<MailingList onClose={() => setMailingList(false)}/>)} 
       </main>
     
