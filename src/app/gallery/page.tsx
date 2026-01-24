@@ -4,7 +4,13 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import MailingList from "../components/MailingList";
 
+import { put, list } from "@vercel/blob";
+
+//const { url } = await put('articles/blob.txt', 'Hello World!', { access: 'public' });
+const response = await list();
+
 export default function Gallery() {
+  
   const imageCount = 10;
   const images = Array.from({ length: imageCount }, (_, i) => `/pics/IMG_${i}.JPG`);
   const [mailingList, setMailingList] = useState(false);
@@ -19,7 +25,9 @@ export default function Gallery() {
         <br></br>
         {images.map((src, index) => (
           <div key={index} className="mb-4">
-            <Image src={src} alt={'photo'} width={600} height={400} className="object-cover"/>
+            {response.blobs.map((blob) => (
+            <Image key={blob.pathname} src={blob.downloadUrl} alt={blob.pathname} width={600} height={400} className="object-cover"/>
+          ))}
           </div>
         ) )}
         <br></br>

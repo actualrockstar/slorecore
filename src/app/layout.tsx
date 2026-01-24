@@ -35,7 +35,7 @@ export default function RootLayout({
           Your browser does not support the video tag.
         </video>
         {children}
-        <a href="https://discord.gg/85jrrUQy"><Image
+        <a href="https://discord.gg/MWUyFsMBg3"><Image
           className="fixed right-5 bottom-5 dark:invert"
           src="/slorecore logo trans.png"
           alt="Slores Logo"
