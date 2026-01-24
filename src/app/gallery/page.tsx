@@ -7,13 +7,30 @@ import MailingList from "../components/MailingList";
 import { put, list } from "@vercel/blob";
 
 //const { url } = await put('articles/blob.txt', 'Hello World!', { access: 'public' });
-const response = await list();
+//const response = await list();
+
+
+type BlobItem = {
+  pathname: string;
+  url?: string;
+  downloadUrl?: string;
+};
 
 export default function Gallery() {
   
   const imageCount = 10;
   const images = Array.from({ length: imageCount }, (_, i) => `/pics/IMG_${i}.JPG`);
   const [mailingList, setMailingList] = useState(false);
+
+  const [blobs, setBlobs] = useState<BlobItem[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const res = await fetch("/api/blobs");
+      const data = await res.json();
+      setBlobs(data);
+    })();
+  }, []);
 
   return (
     <div className="items-left justify-items-left min-h-screen p-8 sm:p-20 ">
@@ -23,13 +40,21 @@ export default function Gallery() {
         <h1 className="text-white bg-black w-fit text-2xl">Gallery:</h1>
         <h1 className='bg-white text-black w-fit text-xl'>Here is some choice photos for your viewing. For video you should just go to <a href="https://www.youtube.com/@slorec0re">youtube</a> bro.</h1>
         <br></br>
-        {images.map((src, index) => (
-          <div key={index} className="mb-4">
-            {response.blobs.map((blob) => (
-            <Image key={blob.pathname} src={blob.downloadUrl} alt={blob.pathname} width={600} height={400} className="object-cover"/>
-          ))}
+        
+          <div className="mb-4">
+            {blobs.map((blob) => (
+        <div key={blob.pathname} className="mb-4">
+          <Image
+            src={blob.url ?? blob.downloadUrl!}
+            alt={blob.pathname}
+            width={600}
+            height={400}
+            className="object-cover"
+          />
+        </div>
+      ))}
           </div>
-        ) )}
+
         <br></br>
         <button className='fixed bottom-10 bg-white text-black' onClick={() => {setMailingList(true)}}>become a slore</button> 
             {mailingList && (<MailingList onClose={() => setMailingList(false)}/>)} 
