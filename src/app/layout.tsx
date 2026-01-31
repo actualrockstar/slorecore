@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Silkscreen } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
+import { Analytics } from "@vercel/analytics/next"
 
 const silkscreen = Silkscreen({
   weight: ['400', '700'],  // Silkscreen has regular (400) and bold (700)
@@ -24,6 +25,7 @@ export default function RootLayout({
       <body
         className={`${silkscreen.className} antialiased`}
       >
+        <Analytics/>
         <video
           autoPlay
           muted
