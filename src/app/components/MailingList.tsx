@@ -12,7 +12,7 @@ export default function NewsletterForm({ onClose }: { onClose: () => void }) {
     setStatus('loading')
     
     try {
-      const response = await fetch('https://slorecore.app.n8n.cloud/webhook/e0e4c850-4f85-4792-9f91-53abc7721e32', {
+      const response = await fetch('https://slorecore.app.n8n.cloud/webhook-test/e0e4c850-4f85-4792-9f91-53abc7721e32', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, name })
@@ -39,18 +39,20 @@ export default function NewsletterForm({ onClose }: { onClose: () => void }) {
       backgroundColor: 'rgba(0,0,0,0.5)',
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      color: 'black'
     }}>
       <div style={{ 
         backgroundColor: 'white', 
         padding: '30px', 
         borderRadius: '8px',
         maxWidth: '400px',
-        width: '100%'
+        width: '100%',
+        color: 'black'
       }}>
         <button onClick={onClose} style={{ float: 'right' }}>✕</button>
         
-        <h2>Subscribe to our newsletter</h2>
+        <h2 >Subscribe to our newsletter</h2>
         
         <form onSubmit={handleSubmit}>
           <input
