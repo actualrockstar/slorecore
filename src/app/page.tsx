@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import MailingList from "./components/MailingList";
+import BouncingLogo from "./components/BouncingLogo";
 
 export default function Home() {
   const [mailingList, setMailingList] = useState(false);
@@ -16,9 +17,10 @@ export default function Home() {
         <Link className='bg-white text-black w-fit text-xl' href='https://mareko-theslores.bandcamp.com/'>Store</Link>
         <Link className='bg-white text-black w-fit text-xl' href='/socials'>Socials</Link>
         <Link className='bg-white text-black w-fit text-xl' href='/contact'>Contact</Link>
-        
-      <button className='fixed bottom-10 bg-white text-black' onClick={() => {setMailingList(true)}}>become a slore</button> 
-      {mailingList && (<MailingList onClose={() => setMailingList(false)}/>)} 
+
+        <button className='fixed bottom-10 bg-white text-black' onClick={() => { setMailingList(true) }}>become a slore</button>
+        {mailingList && (<MailingList onClose={() => setMailingList(false)} />)}
+        <BouncingLogo src="/triggerwarning_cover.png" href="/trigger-warning" width={110} speed={1.5} />
       </main>
     </div>
   );
