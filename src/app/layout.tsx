@@ -41,7 +41,7 @@ export default function RootLayout({
           className="fixed right-5 bottom-5 dark:invert"
           src="/slorecore logo trans.png"
           alt="Slores Logo"
-          width={200}
+          width={150}
           height={38}
           priority
         /></a>
