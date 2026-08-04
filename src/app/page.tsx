@@ -14,7 +14,7 @@ export default function Home() {
         <Link className='bg-white text-black w-fit text-xl' href='/music'>Music</Link>
         <Link className='bg-white text-black w-fit text-xl' href='/gallery'>Gallery</Link>
         <Link className='bg-white text-black w-fit text-xl' href='/shows'>Shows</Link>
-        <Link className='bg-white text-black w-fit text-xl' href='https://mareko-theslores.bandcamp.com/'>Store</Link>
+        <Link className='bg-white text-black w-fit text-xl' href='/shop'>Store</Link>
         <Link className='bg-white text-black w-fit text-xl' href='/socials'>Socials</Link>
         <Link className='bg-white text-black w-fit text-xl' href='/contact'>Contact</Link>
 

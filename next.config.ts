@@ -10,6 +10,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/shop",
+        destination: "https://mareko-theslores.bandcamp.com/",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
