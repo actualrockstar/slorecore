@@ -14,10 +14,11 @@ export default function LayoutClientWrapper({
   const isAnomaly = pathname === "/anomaly" || pathname?.startsWith("/anomaly/");
   const isElywyd = pathname === "/elywyd" || pathname?.startsWith("/elywyd/");
 
-  // The ELYWYD experience is fully self-contained (its own fixed-position
-  // black stage). Render it without any of the site's normal chrome:
-  // no video background, no Silkscreen wrapper, no Discord logo.
-  if (isElywyd) {
+  const isGame = pathname === "/get-to-the-show";
+
+  // The ELYWYD experience and standalone Game experience are fully self-contained.
+  // Render without normal site chrome (video background, Silkscreen wrapper, Discord logo).
+  if (isElywyd || isGame) {
     return <>{children}</>;
   }
 
