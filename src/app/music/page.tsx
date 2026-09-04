@@ -16,7 +16,7 @@ export default function Music() {
         
         <br></br>
         <Image src={'https://urbosdur9qrkencr.public.blob.vercel-storage.com/elywyd%20cover%204.png'} width={600} height={300} alt='slorecore cover'></Image>
-        <p className="text-black bg-white w-fit text-xl">2025 - Everybody Loves You When You're Dead - Single: 
+        <p className="text-black bg-white w-fit text-xl">2026 - Everybody Loves You When You're Dead - Single: 
           <a href="https://unitedmasters.com/m/everybody-loves-you-when-you-re-dead-1" className="text-red-500"> Listen</a> 
         </p>
         
