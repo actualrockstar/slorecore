@@ -1,0 +1,463 @@
+/* ===========================================================================
+   ELYWYD — scoped visual system.
+   Everything is namespaced under .elywyd so nothing leaks into the rest of
+   the site. Black background, dirty white / pale gray text, limited red.
+   CRT scanlines, VHS noise, RGB separation, flicker — all opt-out under
+   prefers-reduced-motion.
+   =========================================================================== */
+
+.elywyd {
+  --bg: #050505;
+  --ink: #d7d3cb; /* dirty white */
+  --ink-dim: #8a8681; /* pale gray */
+  --ink-faint: #55524d;
+  --red: #e23b2e;
+  --red-deep: #7a1a14;
+  --panel: #0c0c0c;
+  --line: #1c1c1c;
+
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: ui-monospace, "SFMono-Regular", "Menlo", "Consolas", monospace;
+  overflow: hidden;
+  /* Safe-area insets for notched phones / in-app browsers. */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overscroll-behavior: none;
+}
+
+.elywyd *,
+.elywyd *::before,
+.elywyd *::after {
+  box-sizing: border-box;
+}
+
+.elywyd ::selection {
+  background: var(--red-deep);
+  color: #fff;
+}
+
+/* --- Overlays: scanlines / noise / vignette ------------------------------ */
+.elywyd-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  background: linear-gradient(
+      rgba(10, 10, 10, 0) 50%,
+      rgba(0, 0, 0, 0.28) 50%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(226, 59, 46, 0.05),
+      rgba(0, 255, 60, 0.015),
+      rgba(40, 90, 255, 0.05)
+    );
+  background-size: 100% 3px, 4px 100%;
+}
+
+.elywyd-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 61;
+  background: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 0) 55%,
+    rgba(0, 0, 0, 0.85) 150%
+  );
+}
+
+.elywyd-noise {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 59;
+  opacity: 0.06;
+  background: transparent
+    url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="n"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23n)" opacity="0.6"/%3E%3C/svg%3E')
+    repeat;
+}
+
+.elywyd-tracking {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 160px;
+  pointer-events: none;
+  z-index: 58;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.03) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+/* Instability level ramps up per phase (set inline via --instability 0..1). */
+.elywyd-noise {
+  opacity: calc(0.04 + var(--instability, 0) * 0.09);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .elywyd-noise {
+    animation: elywyd-grain 0.7s steps(8) infinite;
+  }
+  .elywyd-tracking {
+    animation: elywyd-track 9s linear infinite;
+  }
+}
+
+@keyframes elywyd-grain {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-2%, 1%);
+  }
+  40% {
+    transform: translate(1%, -2%);
+  }
+  60% {
+    transform: translate(2%, 2%);
+  }
+  80% {
+    transform: translate(-1%, 1%);
+  }
+}
+
+@keyframes elywyd-track {
+  0% {
+    top: -160px;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+/* --- Layout scaffolding -------------------------------------------------- */
+.elywyd-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.elywyd-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.elywyd-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Gently fade the oldest item at the top as the window rolls. */
+.elywyd-feed-mask {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 7%,
+    #000 100%
+  );
+  mask-image: linear-gradient(to bottom, transparent 0, #000 7%, #000 100%);
+}
+
+/* --- Typography helpers -------------------------------------------------- */
+.elywyd-mono {
+  font-variant-ligatures: none;
+  letter-spacing: 0.02em;
+}
+
+.elywyd-dim {
+  color: var(--ink-dim);
+}
+.elywyd-faint {
+  color: var(--ink-faint);
+}
+.elywyd-red {
+  color: var(--red);
+}
+
+.elywyd-label {
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.62rem;
+  color: var(--ink-dim);
+}
+
+/* --- Buttons ------------------------------------------------------------- */
+.elywyd-btn {
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  background: #101010;
+  color: var(--ink);
+  padding: 0.9rem 1.1rem;
+  min-height: 48px;
+  transition: transform 0.08s ease, background 0.12s ease, color 0.12s ease,
+    border-color 0.12s ease;
+}
+.elywyd-btn:hover {
+  border-color: var(--red);
+  color: #fff;
+}
+.elywyd-btn:active {
+  transform: scale(0.97);
+}
+.elywyd-btn:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+}
+
+.elywyd-btn-primary {
+  background: var(--red);
+  border-color: var(--red);
+  color: #0a0a0a;
+  font-weight: 700;
+  box-shadow: 0 0 0 1px rgba(226, 59, 46, 0.3);
+}
+.elywyd-btn-primary:hover {
+  background: #ff4a3c;
+  color: #000;
+}
+
+.elywyd-btn-ghost {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--ink-dim);
+}
+
+/* Control chips (skip/mute) — one-handed reach, large targets. */
+.elywyd-chip {
+  font-family: inherit;
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  background: rgba(10, 10, 10, 0.7);
+  border: 1px solid var(--line);
+  min-height: 40px;
+  min-width: 40px;
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+}
+.elywyd-chip:hover {
+  color: #fff;
+  border-color: var(--red);
+}
+.elywyd-chip:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+}
+
+/* --- Inputs -------------------------------------------------------------- */
+.elywyd-input {
+  font-family: inherit;
+  width: 100%;
+  background: #0a0a0a;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  /* 16px min prevents iOS zoom-on-focus. */
+  font-size: 16px;
+  padding: 0.85rem 0.9rem;
+  letter-spacing: 0.08em;
+}
+.elywyd-input::placeholder {
+  color: var(--ink-faint);
+}
+.elywyd-input:focus {
+  outline: none;
+  border-color: var(--red);
+}
+
+/* --- Cards / feed -------------------------------------------------------- */
+.elywyd-card {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 0.75rem 0.85rem;
+}
+
+.elywyd-card-personal {
+  border-left: 2px solid #3a3a3a;
+}
+.elywyd-card-public {
+  border-left: 2px solid var(--red-deep);
+}
+.elywyd-card-institutional {
+  border-left: 2px solid #2b3a2b;
+}
+.elywyd-card-commercial {
+  border-left: 2px solid #4a3a10;
+}
+.elywyd-card-content {
+  border-left: 2px solid var(--red);
+}
+
+.elywyd-headline {
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--ink);
+  background: #0a0a0a;
+  padding: 0.8rem 0.9rem;
+}
+
+/* --- Animations ---------------------------------------------------------- */
+.elywyd-fade-in {
+  animation: elywyd-fade 0.4s ease-out both;
+}
+@keyframes elywyd-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.elywyd-flicker {
+  animation: elywyd-flicker 3.5s steps(1) infinite;
+}
+@keyframes elywyd-flicker {
+  0%,
+  92%,
+  100% {
+    border-color: var(--line);
+  }
+  94% {
+    border-color: var(--red);
+  }
+  96% {
+    border-color: #222;
+  }
+}
+
+/* RGB separation — used sparingly on headings during chaos. */
+.elywyd-rgb {
+  position: relative;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .elywyd-rgb[data-glitch="on"] {
+    animation: elywyd-rgb 1.6s steps(2) infinite;
+  }
+}
+@keyframes elywyd-rgb {
+  0%,
+  100% {
+    text-shadow: none;
+  }
+  50% {
+    text-shadow: -1.5px 0 rgba(226, 59, 46, 0.8), 1.5px 0 rgba(40, 120, 255, 0.7);
+  }
+}
+
+.elywyd-blink {
+  animation: elywyd-blink 1s steps(1) infinite;
+}
+@keyframes elywyd-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Status change slam. */
+.elywyd-slam {
+  animation: elywyd-slam 0.5s cubic-bezier(0.2, 1, 0.3, 1) both;
+}
+@keyframes elywyd-slam {
+  0% {
+    opacity: 0;
+    transform: scale(1.4);
+    letter-spacing: 0.6em;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    letter-spacing: 0.12em;
+  }
+}
+
+/* Ending title — strong editorial. */
+.elywyd-ending-title {
+  font-family: ui-monospace, "SFMono-Regular", "Menlo", monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  color: #f2efe9;
+}
+
+/* Chaos-phase micro-jitter for content cards. */
+@media (prefers-reduced-motion: no-preference) {
+  .elywyd-jitter {
+    animation: elywyd-jitter 2.2s steps(3) infinite;
+  }
+}
+@keyframes elywyd-jitter {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0.5px, -0.5px);
+  }
+}
+
+/* --- Reduced motion: kill motion, keep discrete fades -------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .elywyd-noise {
+    animation: none;
+    opacity: 0.04;
+  }
+  .elywyd-tracking {
+    display: none;
+  }
+  .elywyd-flicker,
+  .elywyd-rgb[data-glitch="on"],
+  .elywyd-jitter,
+  .elywyd-blink {
+    animation: none;
+  }
+  .elywyd-slam {
+    animation: elywyd-fade 0.3s ease-out both;
+  }
+  .elywyd-fade-in {
+    animation: elywyd-fade 0.25s ease-out both;
+  }
+}
+
+/* Respect an explicit in-app reduced-motion preview toggle too. */
+.elywyd[data-reduced="true"] .elywyd-noise {
+  animation: none;
+  opacity: 0.04;
+}
+.elywyd[data-reduced="true"] .elywyd-tracking {
+  display: none;
+}
+.elywyd[data-reduced="true"] .elywyd-flicker,
+.elywyd[data-reduced="true"] .elywyd-rgb[data-glitch="on"],
+.elywyd[data-reduced="true"] .elywyd-jitter,
+.elywyd[data-reduced="true"] .elywyd-blink {
+  animation: none;
+}
