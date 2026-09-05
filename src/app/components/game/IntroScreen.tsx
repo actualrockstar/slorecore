@@ -37,7 +37,7 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
   return (
     <div className="gts-screen">
       <div className="gts-logo">
-        <Image src="/trans-logo-fix.png" alt="The Slores" width={200} height={80} priority />
+        <Image src="/the-slores-logo2026-crop-trans.png" alt="The Slores" width={200} height={80} priority />
       </div>
       <h1 className="gts-title">Get To The Show</h1>
       <h2 className="gts-subtitle">Arcade Runner</h2>
