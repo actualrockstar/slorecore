@@ -37,11 +37,11 @@ export default function ResultsScreen({ playerName, results, onPlayAgain }: Resu
 
   const itemIcons: Record<string, string> = {
     guitar: '🎸',
-    mic: '🎙️',
+    microphone: '🎙️',
     drum: '🥁',
     merch: '👕',
     ticket: '🎫',
-    golden_record: '💿'
+    rare: '🚬'
   };
 
   return (
