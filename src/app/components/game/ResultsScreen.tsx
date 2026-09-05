@@ -68,9 +68,19 @@ export default function ResultsScreen({ playerName, results, onPlayAgain }: Resu
           ))}
         </div>
 
-        <button onClick={onPlayAgain} className="gts-btn-play-again" style={{ marginBottom: '20px' }}>
+        <button onClick={onPlayAgain} className="gts-btn-play-again" style={{ marginBottom: '12px' }}>
           Play Again
         </button>
+
+        <a
+          href="https://www.axs.com/events/1572933/anti-anemoia-festival-tickets?skin=websterhall"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="gts-btn-tickets"
+          style={{ marginBottom: '20px' }}
+        >
+          Get Tickets to the Show
+        </a>
 
         <div className="gts-leaderboard" style={{ margin: '0 auto' }}>
           <h3 className="gts-leaderboard-title">Top Scores</h3>
