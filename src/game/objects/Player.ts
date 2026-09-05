@@ -19,17 +19,19 @@ export class Player extends Phaser.GameObjects.Container {
     super(scene, 0, 0);
     
     this.sprite = scene.add.sprite(0, 0, 'player');
+    this.sprite.play('player-run');
     this.add(this.sprite);
     
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
     const body = this.body as Phaser.Physics.Arcade.Body;
-    body.setSize(36, 50);
-    body.setOffset(-18, -25);
+    body.setSize(89, 178);
+    body.setOffset(-44.5, -89);
     
     this.setDepth(50);
-    
+    this.sprite.setScale(1.5); // 1.5x the native size
+
     this.updateProjection();
   }
 

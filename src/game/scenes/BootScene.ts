@@ -32,12 +32,24 @@ export default class BootScene extends Phaser.Scene {
     this.load.image(ASSET_MANIFEST.obstacle_pothole.key, '/game/assets/pothole.png');
 
     // Player (try loading player.png if added)
-    this.load.image(ASSET_MANIFEST.player.key, '/game/assets/player.png');
+    //this.load.image(ASSET_MANIFEST.player.key, '/game/assets/player.png');
+    this.load.spritesheet('player', '/game/assets/player_run.png', {
+      frameWidth: 89,
+      frameHeight: 178,
+    });
   }
 
   create() {
     // Generate fallback programmatic textures for any missing assets
     this.generateFallbackTextures();
+
+    this.anims.create({
+      key: 'player-run',
+      frames: this.anims.generateFrameNumbers('player', { start: 0, end: 15 }),
+      frameRate: 4,
+      repeat: -1,
+    });
+
     this.scene.start('GameScene');
   }
 

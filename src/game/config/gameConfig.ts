@@ -19,9 +19,9 @@ export const GAME_CONFIG = {
 
   MIXED_MEDIA_SCALING: {
     player: 1.0,
-    taxi: 1.0,
-    car: 1.0,
-    trash: 0.7,
+    taxi: 0.8,
+    car: 0.9,
+    trash: 0.6,
     barrier: 0.8,
     bike: 1.0,
     rat: 0.5,
